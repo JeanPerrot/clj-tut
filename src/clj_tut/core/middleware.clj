@@ -13,9 +13,10 @@
       (or (handler req)
           (ring/not-found "resource not found"))
       (catch JsonParseException e
-        {}
-        (ring/response {"error" "malformed json"} 400))
+        {:status  400
+         :body    "malformed json"}
+        )
       (catch Exception e
-        (json-response {"error" "malformed json"} 400)
-        (let [{:keys [type message]} (meta e)]
-          (json-response {"error" message} (error-codes type)))))))
+        {:status  500
+         :body    (.getMessage e)}
+        ))))
