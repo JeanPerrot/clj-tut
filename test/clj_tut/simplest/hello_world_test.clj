@@ -3,7 +3,6 @@
             [clj-tut.core.hello-world :refer :all]))
 
 (defn request [method uri]
-
   {:server-port 80,
    :server-name "localhost",
    :remote-addr "localhost",

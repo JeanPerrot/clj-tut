@@ -2,11 +2,10 @@
   (:require [compojure.core :refer :all]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults api-defaults]]
             [ring.server.standalone :refer [serve]]
-            [ring.util.response :as ring]
+            [ring.util.response :as ring :refer [response]]
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
             [clj-tut.core.middleware :as m]
-            [clj-tut.core.service :as service]
-            [clj-tut.core.mongo :as mongo]))
+            [clj-tut.core.service :as service]))
 
 
 (defroutes api-routes
@@ -15,14 +14,15 @@
          (service/fetch-user name)))
   (PUT "/user/:name" {body :body {name :name} :params}
        (service/update-user! name body)
-       (ring/response "success"))
+       (response "success"))
   (GET "/users" []
-       (ring/response
+       (response
          (service/fetch-users)))
   (POST "/users" {body :body}
         (service/create-user! body)
-        (ring/response "created!"))
-  )
+        (response "created!"))
+  (GET "/users/palindromes" []
+       (response (service/fetch-palindromic-names))))
 
 
 (def app
@@ -30,16 +30,14 @@
       (wrap-json-body {:keywords? true})
       (wrap-json-response)
       (wrap-defaults api-defaults)
-      (m/wrap-error-handling)
-      ))
+      (m/wrap-error-handling)))
 
-(defn start []
-  (mongo/start)
+(defn start! []
   (def server (serve app {:port 8080})))
 
-(defn stop []
+(defn stop! []
   (.stop server))
 
-(defn restart []
-  (stop)
-  (start))
+(defn restart! []
+  (stop!)
+  (start!))

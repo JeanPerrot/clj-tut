@@ -10,6 +10,8 @@
                  [halresource "0.2.0-SNAPSHOT"]
                  [com.novemberain/monger "2.0.1"]
                  [com.googlecode.libphonenumber/libphonenumber "7.0.1"]
+                 [org.clojure/java.jdbc "0.3.6"]
+                 [mysql/mysql-connector-java "5.1.25"]
                  ]
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler clj-tut.core.handler/app}

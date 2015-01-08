@@ -2,7 +2,7 @@
   (:require [monger.core :as mg]
             [monger.collection :as mc]))
 
-(defn start []
+(defn start! []
   (let [conn (mg/connect)]
     (def db (mg/get-db conn "play"))))
 
